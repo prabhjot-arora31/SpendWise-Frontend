@@ -11,6 +11,10 @@ import {
   FaBackward,
   FaTimes,
 } from "react-icons/fa";
+import { logout } from "../features/auth/authSlice";
+
+import Header from "../components/Header";
+import { onLogout } from "../utils/logout";
 
 export default function SearchPage() {
   const dispatch = useDispatch();
@@ -62,179 +66,184 @@ export default function SearchPage() {
   }, []);
 
   return (
-    <div className="p-4 max-w-4xl mx-auto">
-      <div className="flex items-center gap-3 mb-6  transition-colors">
-        <div
-          onClick={() => navigate(-1)}
-          className="hover:text-blue-600 cursor-pointer flex items-center gap-2"
-        >
-          <FaBackward className="text-lg" /> Back
-        </div>
-      </div>
-
-      <h1 className="text-2xl font-bold mb-4">Search Transactions</h1>
-      {/* Search Input + Filter Icon */}
-      <div className="flex gap-2 mb-4">
-        <div className="flex-1 relative">
-          <FaSearch className="absolute left-3 top-3 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search by title or category..."
-            value={filters.search}
-            onChange={handleSearchInput}
-            className="pl-10 pr-3 py-2 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-        </div>
-
-        {!showFilters && (
-          <button
-            onClick={() => setShowFilters((prev) => !prev)}
-            className="p-2 bg-gray-200 rounded hover:bg-gray-300 flex items-center justify-center"
+    <div className="min-h-screen bg-gray-100 p-4">
+      <Header onLogout={() => onLogout(logout, dispatch, navigate)} />
+      <div className="p-4 max-w-4xl mx-auto">
+        <div className="flex items-center gap-3 mb-6  transition-colors">
+          <div
+            onClick={() => navigate(-1)}
+            className="hover:text-blue-600 cursor-pointer flex items-center gap-2"
           >
-            <FaFilter />
-          </button>
-        )}
-      </div>
-
-      {/* Advanced Filters */}
-      {showFilters && (
-        <div className="bg-gray-300 shadow rounded-lg p-4 mb-6 ">
-          <h2 className="text-lg font-semibold mb-4  items-center gap-2 flex justify-between">
-            <div className="flex items-center gap-2">
-              {" "}
-              <FaFilter className="text-blue-500" /> Filters
-            </div>
-            <div
-              className="cursor-pointer"
-              onClick={() => setShowFilters(false)}
-            >
-              <FaTimes size={22} />
-            </div>
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Type */}
-            <div>
-              <label className="text-sm font-medium mb-2 flex items-center gap-1">
-                <FaList className="text-gray-500" />
-                <span className="leading-none">Type</span>
-              </label>
-
-              <select
-                name="type"
-                value={filters.type}
-                onChange={handleFilterChange}
-                className="border p-2 rounded w-full"
-              >
-                <option value="">All Types</option>
-                <option value="Income">Income</option>
-                <option value="Expense">Expense</option>
-              </select>
-            </div>
-
-            {/* Category */}
-            <div>
-              <label className="text-sm font-medium mb-1 flex items-center gap-1 mb-2">
-                <FaTags className="text-gray-500" />
-                <span className="leading-none">Category</span>
-              </label>
-
-              <input
-                name="category"
-                placeholder="e.g. electronics, clothes"
-                value={filters.category}
-                onChange={handleFilterChange}
-                className="border p-2 rounded w-full"
-              />
-            </div>
-
-            {/* Start Date */}
-            <div>
-              <label className="text-sm font-medium flex items-center gap-1 mb-2">
-                <FaCalendarAlt className="text-gray-500" />
-                <span className="leading-none">Start Date</span>
-              </label>
-
-              <input
-                type="date"
-                name="startDate"
-                value={filters.startDate}
-                onChange={handleFilterChange}
-                className="border p-2 rounded w-full"
-              />
-            </div>
-
-            {/* End Date */}
-            <div>
-              <label className="text-sm font-medium mb-2 flex items-center gap-1">
-                <FaCalendarAlt className="text-gray-500" />
-                <span className="leading-none">End Date</span>
-              </label>
-
-              <input
-                type="date"
-                name="endDate"
-                value={filters.endDate}
-                onChange={handleFilterChange}
-                className="border p-2 rounded w-full"
-              />
-            </div>
+            <FaBackward className="text-lg" /> Back
           </div>
         </div>
-      )}
 
-      {/* Results */}
-      {isLoading ? (
-        <div className="w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin mx-auto mt-11"></div>
-      ) : searchResults && searchResults.length === 0 ? (
-        <p>No results found</p>
-      ) : (
-        <ul className="divide-y divide-gray-200">
-          {searchResults &&
-            searchResults.map((t) => (
-              <li
-                key={t._id}
-                className="py-2 flex justify-between items-center"
-              >
-                <div>
-                  <p className="font-semibold">{t.title}</p>
-                  <p className="text-sm text-gray-500">
-                    {t.category} — {new Date(t.date).toLocaleDateString()}
-                  </p>
-                </div>
-                <button
-                  onClick={() => navigate(`/transaction/${t._id}`)}
-                  className="text-blue-500 hover:underline"
-                >
-                  View More
-                </button>
-              </li>
-            ))}
-        </ul>
-      )}
+        <h1 className="text-2xl font-bold mb-4">Search Transactions</h1>
+        {/* Search Input + Filter Icon */}
+        <div className="flex gap-2 mb-4">
+          <div className="flex-1 relative">
+            <FaSearch className="absolute left-3 top-3 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search by title or category..."
+              value={filters.search}
+              onChange={handleSearchInput}
+              className="pl-10 pr-3 py-2 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+          </div>
 
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex gap-2 mt-4">
-          {Array.from({ length: totalPages }, (_, i) => (
+          {!showFilters && (
             <button
-              key={i}
-              onClick={() => {
-                setFilters((prev) => {
-                  const newFilters = { ...prev, page: i + 1 };
-                  search(newFilters);
-                  return newFilters;
-                });
-              }}
-              className={`px-3 py-1 rounded ${
-                currentPage === i + 1 ? "bg-blue-600 text-white" : "bg-gray-200"
-              }`}
+              onClick={() => setShowFilters((prev) => !prev)}
+              className="p-2 bg-gray-200 rounded hover:bg-gray-300 flex items-center justify-center"
             >
-              {i + 1}
+              <FaFilter />
             </button>
-          ))}
+          )}
         </div>
-      )}
+
+        {/* Advanced Filters */}
+        {showFilters && (
+          <div className="bg-gray-300 shadow rounded-lg p-4 mb-6 ">
+            <h2 className="text-lg font-semibold mb-4  items-center gap-2 flex justify-between">
+              <div className="flex items-center gap-2">
+                {" "}
+                <FaFilter className="text-blue-500" /> Filters
+              </div>
+              <div
+                className="cursor-pointer"
+                onClick={() => setShowFilters(false)}
+              >
+                <FaTimes size={22} />
+              </div>
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Type */}
+              <div>
+                <label className="text-sm font-medium mb-2 flex items-center gap-1">
+                  <FaList className="text-gray-500" />
+                  <span className="leading-none">Type</span>
+                </label>
+
+                <select
+                  name="type"
+                  value={filters.type}
+                  onChange={handleFilterChange}
+                  className="border p-2 rounded w-full"
+                >
+                  <option value="">All Types</option>
+                  <option value="Income">Income</option>
+                  <option value="Expense">Expense</option>
+                </select>
+              </div>
+
+              {/* Category */}
+              <div>
+                <label className="text-sm font-medium mb-1 flex items-center gap-1 mb-2">
+                  <FaTags className="text-gray-500" />
+                  <span className="leading-none">Category</span>
+                </label>
+
+                <input
+                  name="category"
+                  placeholder="e.g. electronics, clothes"
+                  value={filters.category}
+                  onChange={handleFilterChange}
+                  className="border p-2 rounded w-full"
+                />
+              </div>
+
+              {/* Start Date */}
+              <div>
+                <label className="text-sm font-medium flex items-center gap-1 mb-2">
+                  <FaCalendarAlt className="text-gray-500" />
+                  <span className="leading-none">Start Date</span>
+                </label>
+
+                <input
+                  type="date"
+                  name="startDate"
+                  value={filters.startDate}
+                  onChange={handleFilterChange}
+                  className="border p-2 rounded w-full"
+                />
+              </div>
+
+              {/* End Date */}
+              <div>
+                <label className="text-sm font-medium mb-2 flex items-center gap-1">
+                  <FaCalendarAlt className="text-gray-500" />
+                  <span className="leading-none">End Date</span>
+                </label>
+
+                <input
+                  type="date"
+                  name="endDate"
+                  value={filters.endDate}
+                  onChange={handleFilterChange}
+                  className="border p-2 rounded w-full"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Results */}
+        {isLoading ? (
+          <div className="w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin mx-auto mt-11"></div>
+        ) : searchResults && searchResults.length === 0 ? (
+          <p>No results found</p>
+        ) : (
+          <ul className="divide-y divide-gray-200">
+            {searchResults &&
+              searchResults.map((t) => (
+                <li
+                  key={t._id}
+                  className="py-2 flex justify-between items-center"
+                >
+                  <div>
+                    <p className="font-semibold">{t.title}</p>
+                    <p className="text-sm text-gray-500">
+                      {t.category} — {new Date(t.date).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => navigate(`/transaction/${t._id}`)}
+                    className="text-blue-500 hover:underline"
+                  >
+                    View More
+                  </button>
+                </li>
+              ))}
+          </ul>
+        )}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex gap-2 mt-4">
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => {
+                  setFilters((prev) => {
+                    const newFilters = { ...prev, page: i + 1 };
+                    search(newFilters);
+                    return newFilters;
+                  });
+                }}
+                className={`px-3 py-1 rounded ${
+                  currentPage === i + 1
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200"
+                }`}
+              >
+                {i + 1}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

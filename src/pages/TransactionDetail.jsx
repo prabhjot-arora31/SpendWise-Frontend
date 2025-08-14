@@ -10,12 +10,16 @@ import {
   FaBackward,
 } from "react-icons/fa";
 import api from "../utils/api";
+import Header from "../components/Header";
+import { logout } from "../features/auth/authSlice";
+import { useDispatch } from "react-redux";
+import { onLogout } from "../utils/logout";
 
 export default function TransactionDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [transaction, setTransaction] = useState(null);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     api
       .get(`/transactions/${id}`)
@@ -44,50 +48,54 @@ export default function TransactionDetail() {
     );
 
   return (
-    <div className="flex min-h-screen items-center">
-      <div className="p-6 max-w-lg mx-auto bg-white shadow-lg rounded-lg">
-        <div className="flex items-center gap-3 mb-6  transition-colors">
-          <div
-            onClick={() => navigate(-1)}
-            className="hover:text-blue-600 cursor-pointer flex items-center gap-2"
-          >
-            <FaBackward className="text-lg" /> Back
+    <div className="min-h-screen bg-gray-100 p-4">
+      <Header onLogout={() => onLogout(logout, dispatch, navigate)} />
+
+      <div className="flex mt-12 items-center">
+        <div className="p-6 max-w-lg mx-auto bg-white shadow-lg rounded-lg">
+          <div className="flex items-center gap-3 mb-6  transition-colors">
+            <div
+              onClick={() => navigate(-1)}
+              className="hover:text-blue-600 cursor-pointer flex items-center gap-2"
+            >
+              <FaBackward className="text-lg" /> Back
+            </div>
           </div>
-        </div>
-        <h2 className="text-3xl font-bold mb-4 flex items-center gap-2">
-          <FaMoneyBillWave /> {transaction.title}
-        </h2>
+          <h2 className="text-3xl font-bold mb-4 flex items-center gap-2">
+            <FaMoneyBillWave /> {transaction.title}
+          </h2>
 
-        <div className="mb-2 flex items-center gap-2">
-          <strong>Amount:</strong> ₹{transaction.amount}
-        </div>
-        <div className="mb-2 flex items-center gap-2">
-          <strong>Type:</strong> {transaction.type}
-        </div>
-        <div className="mb-2 flex items-center gap-2">
-          <FaTags /> <strong>Category:</strong> {transaction.category}
-        </div>
-        <div className="mb-2 flex items-center gap-2">
-          <FaCalendarAlt /> <strong>Date:</strong>{" "}
-          {new Date(transaction.date).toLocaleDateString()}
-        </div>
-        <div className="mb-4 flex items-start gap-2 items-center">
-          <FaStickyNote /> <strong>Notes:</strong> {transaction.notes || "-"}
-        </div>
+          <div className="mb-2 flex items-center gap-2">
+            <strong>Amount:</strong> ₹{transaction.amount}
+          </div>
+          <div className="mb-2 flex items-center gap-2">
+            <strong>Type:</strong> {transaction.type}
+          </div>
+          <div className="mb-2 flex items-center gap-2">
+            <FaTags /> <strong>Category:</strong> {transaction.category}
+          </div>
+          <div className="mb-2 flex items-center gap-2">
+            <FaCalendarAlt /> <strong>Date:</strong>{" "}
+            {new Date(transaction.date).toLocaleDateString()}
+          </div>
+          <div className="mb-4 flex items-start gap-2 items-center">
+            <FaStickyNote /> <strong>Notes:</strong> {transaction.notes || "-"}
+          </div>
 
-        <div className="flex gap-4">
-          <button
-            onClick={handleEdit}
-            className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded transition"
-          >
-            <FaEdit /> Edit
-          </button>
-          <button
-            onClick={handleDelete}
-            className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition"
-          >
-            <FaTrash /> Delete
-          </button>
+          <div className="flex gap-4">
+            <button
+              onClick={handleEdit}
+              className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded transition"
+            >
+              <FaEdit /> Edit
+            </button>
+            <button
+              onClick={handleDelete}
+              className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition"
+            >
+              <FaTrash /> Delete
+            </button>
+          </div>
         </div>
       </div>
     </div>

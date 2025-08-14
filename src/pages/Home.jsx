@@ -6,6 +6,8 @@ import {
 } from "../features/transactions/transactionSlice";
 import { logout } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
+import { onLogout } from "../utils/logout";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -26,10 +28,10 @@ export default function Home() {
     dispatch(fetchTransactions());
   }, [dispatch]);
 
-  const onLogout = () => {
-    dispatch(logout());
-    navigate("/");
-  };
+  //   const onLogout = () => {
+  //     dispatch(logout());
+  //     navigate("/");
+  //   };
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -63,27 +65,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
-      <header className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-3">
-        <h1 className="text-2xl font-bold">
-          Spend<span className="text-blue-600">Wise</span>
-        </h1>
-
-        <div className="flex gap-3">
-          <button
-            onClick={() => navigate("/search")}
-            className="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300"
-          >
-            🔍 Search
-          </button>
-          <button
-            onClick={onLogout}
-            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-          >
-            Logout
-          </button>
-        </div>
-      </header>
-
+      <Header onLogout={() => onLogout(logout, dispatch, navigate)} />
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         <div className="bg-white p-4 rounded-lg shadow text-center">
@@ -108,9 +90,9 @@ export default function Home() {
 
       <div className="flex flex-col items-center gap-6 px-4 py-8 bg-gray-100 min-h-screen">
         {/* Add Transaction Form */}
-        <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-3xl">
+        <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-3xl mx-auto">
           <h2 className="text-2xl font-bold mb-6 text-gray-800">
-            Add Transaction
+        Add Transaction
           </h2>
           <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2">
             <input
@@ -119,7 +101,7 @@ export default function Home() {
               onChange={handleChange}
               placeholder="Title"
               required
-              className="border p-3 rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              className="border p-3 rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none w-full"
             />
             <input
               name="amount"
@@ -128,7 +110,7 @@ export default function Home() {
               onChange={handleChange}
               placeholder="Amount"
               required
-              className="border p-3 rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              className="border p-3 rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none w-full"
             />
             <input
               name="date"
@@ -136,13 +118,13 @@ export default function Home() {
               value={form.date}
               onChange={handleChange}
               required
-              className="border p-3 rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              className="border p-3 rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none w-full"
             />
             <select
               name="type"
               value={form.type}
               onChange={handleChange}
-              className="border p-3 rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              className="border p-3 rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none w-full"
             >
               <option value="Income">Income</option>
               <option value="Expense">Expense</option>
@@ -153,14 +135,14 @@ export default function Home() {
               onChange={handleChange}
               placeholder="Category"
               required
-              className="border p-3 rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              className="border p-3 rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none w-full"
             />
             <input
               name="notes"
               value={form.notes}
               onChange={handleChange}
               placeholder="Notes"
-              className="border p-3 rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              className="border p-3 rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none w-full"
             />
             <button
               type="submit"
