@@ -54,6 +54,7 @@ const transactionsSlice = createSlice({
     isLoading: false,
     isError: false,
     message: "",
+    isAdding: false,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -78,7 +79,12 @@ const transactionsSlice = createSlice({
       })
       // add
       .addCase(addTransaction.fulfilled, (s, { payload }) => {
+        s.isAdding = false;
         s.items.unshift(payload); // put new one on top
+      })
+      .addCase(addTransaction.pending, (s) => {
+        s.isAdding = true;
+        s.isError = false;
       })
       .addCase(searchTransactions.pending, (s) => {
         s.isLoading = true;

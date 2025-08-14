@@ -45,7 +45,7 @@ export default function Landing() {
       <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
         <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
           Spend<span className="text-blue-600">Wise</span>
-            </h1>
+        </h1>
 
         {isError && <p className="text-red-500 text-center mb-4">{message}</p>}
 

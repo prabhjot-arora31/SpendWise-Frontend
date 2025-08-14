@@ -12,7 +12,11 @@ import { onLogout } from "../utils/logout";
 export default function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { items: transactions, isLoading } = useSelector((s) => s.transactions);
+  const {
+    items: transactions,
+    isLoading,
+    isAdding,
+  } = useSelector((s) => s.transactions);
   const { user } = useSelector((s) => s.auth);
 
   const [form, setForm] = useState({
@@ -92,7 +96,7 @@ export default function Home() {
         {/* Add Transaction Form */}
         <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-3xl mx-auto">
           <h2 className="text-2xl font-bold mb-6 text-gray-800">
-        Add Transaction
+            Add Transaction
           </h2>
           <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2">
             <input
@@ -147,8 +151,13 @@ export default function Home() {
             <button
               type="submit"
               className="bg-blue-600 text-white p-3 rounded-md col-span-full hover:bg-blue-700 transition duration-200 flex justify-center items-center gap-2"
+              disabled={isAdding} // disable button while adding
             >
-              Add Transaction
+              {isAdding ? (
+                <div className="w-5 h-5 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin"></div>
+              ) : (
+                "Add Transaction"
+              )}
             </button>
           </form>
         </div>
