@@ -7,7 +7,6 @@ const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
 });
 
-// attach access token on each request
 api.interceptors.request.use((config) => {
   const token =
     store.getState().auth.accessToken || localStorage.getItem("accessToken");
@@ -23,7 +22,6 @@ const flushQueue = (error, token = null) => {
   queue = [];
 };
 
-// refresh on 401
 api.interceptors.response.use(
   (res) => res,
   async (error) => {
@@ -31,7 +29,6 @@ api.interceptors.response.use(
     const publicPaths = ["/auth/login", "/auth/register", "/auth/refresh"];
     const isPublic = publicPaths.some((path) => original.url.includes(path));
 
-    // If it's a public route, just reject without refresh handling
     if (isPublic) {
       return Promise.reject(error);
     }
@@ -39,7 +36,6 @@ api.interceptors.response.use(
     if (error.response?.status === 401 && !original._retry) {
       original._retry = true;
 
-      // If already refreshing, queue this request
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           queue.push({

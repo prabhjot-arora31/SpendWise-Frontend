@@ -35,12 +35,10 @@ export default function SearchPage() {
 
   const [showFilters, setShowFilters] = useState(false);
 
-  // Dispatch search
   const search = (newFilters) => {
     dispatch(searchTransactions(newFilters));
   };
 
-  // Handle search input change (always visible)
   const handleSearchInput = (e) => {
     const value = e.target.value;
     setFilters((prev) => {
@@ -50,7 +48,6 @@ export default function SearchPage() {
     });
   };
 
-  // Handle filter input changes
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters((prev) => {
@@ -60,7 +57,6 @@ export default function SearchPage() {
     });
   };
 
-  // Fetch initial data on mount
   useEffect(() => {
     search(filters);
   }, []);

@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../utils/api";
 
-// hydrate from localStorage
 const user = JSON.parse(
   localStorage.getItem("user") || localStorage.getItem("user") || "null"
 );
@@ -14,7 +13,6 @@ const initialState = {
   message: "",
 };
 
-// Thunks
 export const registerUser = createAsyncThunk(
   "auth/register",
   async (userData, thunkAPI) => {
@@ -66,7 +64,6 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // register
       .addCase(registerUser.pending, (s) => {
         s.isLoading = true;
         s.isError = false;
@@ -83,7 +80,6 @@ const authSlice = createSlice({
         s.isError = true;
         s.message = payload;
       })
-      // login
       .addCase(loginUser.pending, (s) => {
         s.isLoading = true;
         s.isError = false;

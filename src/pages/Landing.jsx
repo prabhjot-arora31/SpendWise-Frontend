@@ -31,11 +31,9 @@ export default function Landing() {
     dispatch(action)
       .unwrap()
       .then(() => {
-        // only navigates if API succeeded
         navigate("/home");
       })
       .catch((err) => {
-        // optional: show error toast or alert
         console.error("Auth failed:", err);
       });
   };

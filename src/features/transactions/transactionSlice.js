@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../utils/api";
 
-// Get all transactions
 export const fetchTransactions = createAsyncThunk(
   "transactions/fetchAll",
   async (_, thunkAPI) => {
@@ -16,7 +15,6 @@ export const fetchTransactions = createAsyncThunk(
   }
 );
 
-// Create new transaction
 export const addTransaction = createAsyncThunk(
   "transactions/add",
   async (transactionData, thunkAPI) => {
@@ -36,7 +34,7 @@ export const searchTransactions = createAsyncThunk(
   async (filters, thunkAPI) => {
     try {
       const { data } = await api.get("/transactions", { params: filters });
-      return data; // contains { transactions, totalPages, currentPage }
+      return data;
     } catch (err) {
       return thunkAPI.rejectWithValue(
         err.response?.data?.message || "Search failed"
@@ -59,7 +57,7 @@ const transactionsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // fetch
+
       .addCase(fetchTransactions.pending, (s) => {
         s.isLoading = true;
         s.isError = false;
@@ -67,7 +65,7 @@ const transactionsSlice = createSlice({
       })
       .addCase(fetchTransactions.fulfilled, (s, { payload }) => {
         s.isLoading = false;
-        s.items = payload.transactions; // not payload
+        s.items = payload.transactions;
         s.totalPages = payload.totalPages;
         s.currentPage = payload.currentPage;
       })
@@ -77,10 +75,9 @@ const transactionsSlice = createSlice({
         s.isError = true;
         s.message = payload;
       })
-      // add
       .addCase(addTransaction.fulfilled, (s, { payload }) => {
         s.isAdding = false;
-        s.items.unshift(payload); // put new one on top
+        s.items.unshift(payload);
       })
       .addCase(addTransaction.pending, (s) => {
         s.isAdding = true;

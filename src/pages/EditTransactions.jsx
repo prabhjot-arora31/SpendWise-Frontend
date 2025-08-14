@@ -30,7 +30,7 @@ export default function EditTransaction() {
         setForm({
           title: t.title,
           amount: t.amount,
-          date: t.date.split("T")[0], // format for input[type=date]
+          date: t.date.split("T")[0],
           type: t.type,
           category: t.category,
           notes: t.notes || "",

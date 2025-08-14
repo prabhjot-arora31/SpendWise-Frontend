@@ -32,11 +32,6 @@ export default function Home() {
     dispatch(fetchTransactions());
   }, [dispatch]);
 
-  //   const onLogout = () => {
-  //     dispatch(logout());
-  //     navigate("/");
-  //   };
-
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -56,7 +51,6 @@ export default function Home() {
       });
   };
 
-  // Calculations
   const totalIncome = transactions
     .filter((t) => t.type === "Income")
     .reduce((sum, t) => sum + t.amount, 0);
@@ -151,7 +145,7 @@ export default function Home() {
             <button
               type="submit"
               className="bg-blue-600 text-white p-3 rounded-md col-span-full hover:bg-blue-700 transition duration-200 flex justify-center items-center gap-2"
-              disabled={isAdding} // disable button while adding
+              disabled={isAdding}
             >
               {isAdding ? (
                 <div className="w-5 h-5 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin"></div>
