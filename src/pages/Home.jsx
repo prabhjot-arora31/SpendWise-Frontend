@@ -64,9 +64,11 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-100 p-4">
       <Header onLogout={() => onLogout(logout, dispatch, navigate)} />
-      <h1 className="text-2xl text-start mb-5 font-bold">
-        Hello {user.name.toString().split(" ")[0]}!
-      </h1>
+      {user && (
+        <h1 className="text-2xl text-start mb-5 font-bold">
+          Hello {user.name.toString().split(" ")[0]}!
+        </h1>
+      )}
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         <div className="bg-white p-4 rounded-lg shadow text-center">
